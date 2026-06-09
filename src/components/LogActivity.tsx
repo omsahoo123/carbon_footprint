@@ -250,7 +250,6 @@ export default function LogActivity({ onAddLog, onDeleteLog, recentLogs }: LogAc
                             <option value="car">🚙 Standard Car (Gas/Petrol)</option>
                             <option value="electric_car">🔌 Tesla / Electric Vehicle</option>
                             <option value="hybrid_car">🔋 Hybrid Vehicle</option>
-                            <option value="grid">🚌 Public Bus ride</option>
                             <option value="bus">🚌 Public Bus ride</option>
                             <option value="train">🚆 Passenger Train transit</option>
                             <option value="motorcycle">🏍️ Motorcycle</option>

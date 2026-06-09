@@ -8,7 +8,11 @@ import {
   getRelativeDateString, 
   formatDayLabel, 
   getInitialLogs, 
-  EMISSION_FACTORS 
+  EMISSION_FACTORS,
+  INITIAL_CHALLENGES,
+  getInitialLeaderboard,
+  ECO_TIPS,
+  CATEGORY_INFO
 } from './data';
 
 describe('Carbon Tracker Seeding & Data Helpers', () => {
@@ -78,5 +82,43 @@ describe('Carbon Tracker Seeding & Data Helpers', () => {
     expect(getMockEcoScore(7.5)).toBe(50);
     expect(getMockEcoScore(15)).toBe(0);
     expect(getMockEcoScore(20)).toBe(0);
+  });
+
+  it('should have initial challenges defined with valid savings', () => {
+    expect(INITIAL_CHALLENGES).toBeDefined();
+    expect(INITIAL_CHALLENGES.length).toBeGreaterThanOrEqual(5);
+    INITIAL_CHALLENGES.forEach((challenge: any) => {
+      expect(challenge).toHaveProperty('id');
+      expect(challenge).toHaveProperty('title');
+      expect(challenge).toHaveProperty('saving');
+      expect(challenge.saving).toBeGreaterThan(0);
+      expect(challenge.completed).toBe(false);
+    });
+  });
+
+  it('should generate leaderboard containing correct rank entries', () => {
+    const leaderboard = getInitialLeaderboard();
+    expect(leaderboard.length).toBeGreaterThanOrEqual(5);
+    const selfEntry = leaderboard.find((e: any) => e.isCurrentUser);
+    expect(selfEntry).toBeDefined();
+    expect(selfEntry?.avatar).toBe('🌱');
+  });
+
+  it('should yield list of helpful eco tips', () => {
+    expect(ECO_TIPS).toBeDefined();
+    expect(ECO_TIPS.length).toBeGreaterThan(5);
+    ECO_TIPS.forEach((tip: string) => {
+      expect(typeof tip).toBe('string');
+      expect(tip.length).toBeGreaterThan(15);
+    });
+  });
+
+  it('should map CATEGORY_INFO correctly', () => {
+    expect(CATEGORY_INFO).toBeDefined();
+    expect(CATEGORY_INFO.transport.name).toBe('Transport');
+    expect(CATEGORY_INFO.food.name).toBe('Food');
+    expect(CATEGORY_INFO.energy.name).toBe('Energy');
+    expect(CATEGORY_INFO.travel.name).toBe('Travel');
+    expect(CATEGORY_INFO.shopping.name).toBe('Shopping');
   });
 });
