@@ -197,13 +197,15 @@ export default function LogActivity({ onAddLog, onDeleteLog, recentLogs }: LogAc
           </div>
 
           {/* Category Selector Tabs */}
-          <div className="grid grid-cols-2 md:grid-cols-5 gap-2">
+          <div role="tablist" aria-label="Activity Categories" className="grid grid-cols-2 md:grid-cols-5 gap-2">
             {categories.map(cat => {
               const matches = selectedCategory === cat.id;
               return (
                 <button
                   key={cat.id}
                   type="button"
+                  role="tab"
+                  aria-selected={matches}
                   onClick={() => setSelectedCategory(cat.id)}
                   className={`flex flex-col items-center justify-center p-3 rounded-xl border text-center transition-all ${
                     matches 
@@ -211,7 +213,7 @@ export default function LogActivity({ onAddLog, onDeleteLog, recentLogs }: LogAc
                     : 'bg-white hover:bg-[#F8FAFB] border-[#E2E8F0] text-[#5E7E71]'
                   } outline-none cursor-pointer`}
                 >
-                  <span className="p-1.5 rounded-full bg-white shadow-3xs mb-1.5 text-xs">
+                  <span className="p-1.5 rounded-full bg-white shadow-3xs mb-1.5 text-xs" aria-hidden="true">
                     {cat.icon}
                   </span>
                   <span className="text-[11px] font-bold tracking-tight">{cat.label}</span>
@@ -237,9 +239,10 @@ export default function LogActivity({ onAddLog, onDeleteLog, recentLogs }: LogAc
                   <div className="space-y-4">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       <div className="space-y-2">
-                        <label className="text-[10px] font-bold text-[#5E7E71] uppercase tracking-wider block">Vehicle Type</label>
+                        <label htmlFor="vehicle-type-select" className="text-[10px] font-bold text-[#5E7E71] uppercase tracking-wider block">Vehicle Type</label>
                         <div className="relative">
                           <select
+                            id="vehicle-type-select"
                             value={vehicleType}
                             onChange={(e) => setVehicleType(e.target.value as any)}
                             className="w-full bg-[#F8FAFB] border border-[#E2E8F0] rounded-xl px-4 py-3 text-xs md:text-sm font-semibold text-[#1B4332] outline-none focus:ring-2 focus:ring-[#2D6A4F]/10 focus:border-[#2D6A4F] focus:bg-white transition-all appearance-none cursor-pointer"
@@ -247,18 +250,20 @@ export default function LogActivity({ onAddLog, onDeleteLog, recentLogs }: LogAc
                             <option value="car">🚙 Standard Car (Gas/Petrol)</option>
                             <option value="electric_car">🔌 Tesla / Electric Vehicle</option>
                             <option value="hybrid_car">🔋 Hybrid Vehicle</option>
+                            <option value="grid">🚌 Public Bus ride</option>
                             <option value="bus">🚌 Public Bus ride</option>
                             <option value="train">🚆 Passenger Train transit</option>
                             <option value="motorcycle">🏍️ Motorcycle</option>
                           </select>
-                          <ChevronDown className="absolute right-3.5 top-3.5 w-4 h-4 text-[#5E7E71] pointer-events-none" />
+                          <ChevronDown className="absolute right-3.5 top-3.5 w-4 h-4 text-[#5E7E71] pointer-events-none" aria-hidden="true" />
                         </div>
                       </div>
 
                       <div className="space-y-2">
-                        <label className="text-[10px] font-bold text-[#5E7E71] uppercase tracking-wider block">Distance Driven</label>
+                        <label htmlFor="transport-distance-input" className="text-[10px] font-bold text-[#5E7E71] uppercase tracking-wider block">Distance Driven</label>
                         <div className="relative">
                           <input
+                            id="transport-distance-input"
                             type="number"
                             min="0.1"
                             step="any"
@@ -268,7 +273,7 @@ export default function LogActivity({ onAddLog, onDeleteLog, recentLogs }: LogAc
                             required
                             className="w-full bg-[#F8FAFB] border border-[#E2E8F0] rounded-xl px-4 py-3 text-xs md:text-sm text-[#1B4332] outline-none focus:ring-2 focus:ring-[#2D6A4F]/10 focus:border-[#2D6A4F] focus:bg-white transition-all font-bold"
                           />
-                          <span className="absolute right-3.5 top-3.5 text-[10px] font-extrabold text-[#5E7E71] uppercase">km</span>
+                          <span className="absolute right-3.5 top-3.5 text-[10px] font-extrabold text-[#5E7E71] uppercase select-none">km</span>
                         </div>
                       </div>
                     </div>
@@ -280,9 +285,10 @@ export default function LogActivity({ onAddLog, onDeleteLog, recentLogs }: LogAc
                   <div className="space-y-4">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       <div className="space-y-2">
-                        <label className="text-[10px] font-bold text-[#5E7E71] uppercase tracking-wider block">Dish Classification</label>
+                        <label htmlFor="food-type-select" className="text-[10px] font-bold text-[#5E7E71] uppercase tracking-wider block">Dish Classification</label>
                         <div className="relative">
                           <select
+                            id="food-type-select"
                             value={foodType}
                             onChange={(e) => setFoodType(e.target.value as any)}
                             className="w-full bg-[#F8FAFB] border border-[#E2E8F0] rounded-xl px-4 py-3 text-xs md:text-sm font-semibold text-[#1B4332] outline-none focus:ring-2 focus:ring-[#2D6A4F]/10 focus:border-[#2D6A4F] focus:bg-white transition-all appearance-none cursor-pointer"
@@ -294,26 +300,28 @@ export default function LogActivity({ onAddLog, onDeleteLog, recentLogs }: LogAc
                             <option value="vegetarian">🥗 Vegetarian (dairy, cheese, eggs)</option>
                             <option value="vegan">🌿 Vegan (plant-only bowls)</option>
                           </select>
-                          <ChevronDown className="absolute right-3.5 top-3.5 w-4 h-4 text-[#5E7E71] pointer-events-none" />
+                          <ChevronDown className="absolute right-3.5 top-3.5 w-4 h-4 text-[#5E7E71] pointer-events-none" aria-hidden="true" />
                         </div>
                       </div>
 
                       <div className="space-y-2">
-                        <label className="text-[10px] font-bold text-[#5E7E71] uppercase tracking-wider block">Number of Dishes</label>
-                        <div className="flex items-center border border-[#E2E8F0] rounded-xl bg-[#F8FAFB] overflow-hidden divide-x divide-[#E2E8F0]">
+                        <label htmlFor="food-count-container" id="food-count-label" className="text-[10px] font-bold text-[#5E7E71] uppercase tracking-wider block">Number of Dishes</label>
+                        <div id="food-count-container" role="group" aria-labelledby="food-count-label" className="flex items-center border border-[#E2E8F0] rounded-xl bg-[#F8FAFB] overflow-hidden divide-x divide-[#E2E8F0]">
                           <button
                             type="button"
                             onClick={() => setFoodCount(Math.max(1, foodCount - 1))}
+                            aria-label="Decrease food count"
                             className="flex-1 py-3 text-center text-[#5E7E71] hover:bg-neutral-100 hover:text-[#1B4332] transition-all font-bold cursor-pointer"
                           >
                             -
                           </button>
-                          <span className="flex-[2] py-3 text-center text-sm font-black text-[#1B4332] bg-white">
+                          <span className="flex-[2] py-3 text-center text-sm font-black text-[#1B4332] bg-white" aria-live="polite">
                             {foodCount}
                           </span>
                           <button
                             type="button"
                             onClick={() => setFoodCount(foodCount + 1)}
+                            aria-label="Increase food count"
                             className="flex-1 py-3 text-center text-[#5E7E71] hover:bg-neutral-100 hover:text-[#1B4332] transition-all font-bold cursor-pointer"
                           >
                             +
@@ -329,9 +337,10 @@ export default function LogActivity({ onAddLog, onDeleteLog, recentLogs }: LogAc
                   <div className="space-y-4">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       <div className="space-y-2">
-                        <label className="text-[10px] font-bold text-[#5E7E71] uppercase tracking-wider block">Utility Type</label>
+                        <label htmlFor="energy-type-select" className="text-[10px] font-bold text-[#5E7E71] uppercase tracking-wider block">Utility Type</label>
                         <div className="relative">
                           <select
+                            id="energy-type-select"
                             value={energyType}
                             onChange={(e) => setEnergyType(e.target.value as any)}
                             className="w-full bg-[#F8FAFB] border border-[#E2E8F0] rounded-xl px-4 py-3 text-xs md:text-sm font-semibold text-[#1B4332] outline-none focus:ring-2 focus:ring-[#2D6A4F]/10 focus:border-[#2D6A4F] focus:bg-white transition-all appearance-none cursor-pointer"
@@ -340,14 +349,15 @@ export default function LogActivity({ onAddLog, onDeleteLog, recentLogs }: LogAc
                             <option value="gas">🔥 Natural Gas Heating</option>
                             <option value="fuel_oil">🛢️ Fuel / Heating Oil</option>
                           </select>
-                          <ChevronDown className="absolute right-3.5 top-3.5 w-4 h-4 text-[#5E7E71] pointer-events-none" />
+                          <ChevronDown className="absolute right-3.5 top-3.5 w-4 h-4 text-[#5E7E71] pointer-events-none" aria-hidden="true" />
                         </div>
                       </div>
 
                       <div className="space-y-2">
-                        <label className="text-[10px] font-bold text-[#5E7E71] uppercase tracking-wider block">Amount consumed</label>
+                        <label htmlFor="energy-amount-input" className="text-[10px] font-bold text-[#5E7E71] uppercase tracking-wider block">Amount consumed</label>
                         <div className="relative">
                           <input
+                            id="energy-amount-input"
                             type="number"
                             min="0.1"
                             step="any"
@@ -357,7 +367,7 @@ export default function LogActivity({ onAddLog, onDeleteLog, recentLogs }: LogAc
                             required
                             className="w-full bg-[#F8FAFB] border border-[#E2E8F0] rounded-xl px-4 py-3 text-xs md:text-sm text-[#1B4332] outline-none focus:ring-2 focus:ring-[#2D6A4F]/10 focus:border-[#2D6A4F] focus:bg-white transition-all font-bold"
                           />
-                          <span className="absolute right-3.5 top-3.5 text-[10px] font-extrabold text-[#5E7E71] uppercase">
+                          <span className="absolute right-3.5 top-3.5 text-[10px] font-extrabold text-[#5E7E71] uppercase select-none">
                             {energyType === 'electricity' ? 'kWh' : energyType === 'gas' ? 'm³' : 'Litre'}
                           </span>
                         </div>
@@ -370,9 +380,10 @@ export default function LogActivity({ onAddLog, onDeleteLog, recentLogs }: LogAc
                 {selectedCategory === 'travel' && (
                   <div className="space-y-4">
                     <div className="space-y-2">
-                      <label className="text-[10px] font-bold text-[#5E7E71] uppercase tracking-wider block">Flight Distance</label>
+                      <label htmlFor="travel-distance-input" className="text-[10px] font-bold text-[#5E7E71] uppercase tracking-wider block">Flight Distance</label>
                       <div className="relative">
                         <input
+                          id="travel-distance-input"
                           type="number"
                           min="1"
                           value={travelDistance}
@@ -381,11 +392,11 @@ export default function LogActivity({ onAddLog, onDeleteLog, recentLogs }: LogAc
                           required
                           className="w-full bg-[#F8FAFB] border border-[#E2E8F0] rounded-xl px-4 py-3 text-xs md:text-sm text-[#1B4332] outline-none focus:ring-2 focus:ring-[#2D6A4F]/10 focus:border-[#2D6A4F] focus:bg-white transition-all font-bold"
                         />
-                        <span className="absolute right-3.5 top-3.5 text-[10px] font-extrabold text-[#5E7E71] uppercase">km</span>
+                        <span className="absolute right-3.5 top-3.5 text-[10px] font-extrabold text-[#5E7E71] uppercase select-none">km</span>
                       </div>
                     </div>
                     <div className="rounded-xl border border-blue-100 bg-blue-50/20 p-3.5 text-xs text-blue-800 leading-relaxed flex items-start gap-2.5 font-medium">
-                      <Info className="w-4 h-4 text-blue-600 mt-0.5 shrink-0" />
+                      <Info className="w-4 h-4 text-blue-600 mt-0.5 shrink-0" aria-hidden="true" />
                       <span>
                         Flight calculations represent airline kerosene averages per passenger, assuming a factor of <strong>0.255 kg CO₂</strong> per km traveled.
                       </span>
@@ -398,9 +409,10 @@ export default function LogActivity({ onAddLog, onDeleteLog, recentLogs }: LogAc
                   <div className="space-y-4">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       <div className="space-y-2">
-                        <label className="text-[10px] font-bold text-[#5E7E71] uppercase tracking-wider block">Item category</label>
+                        <label htmlFor="shopping-type-select" className="text-[10px] font-bold text-[#5E7E71] uppercase tracking-wider block">Item category</label>
                         <div className="relative">
                           <select
+                            id="shopping-type-select"
                             value={shoppingType}
                             onChange={(e) => setShoppingType(e.target.value as any)}
                             className="w-full bg-[#F8FAFB] border border-[#E2E8F0] rounded-xl px-4 py-3 text-xs md:text-sm font-semibold text-[#1B4332] outline-none focus:ring-2 focus:ring-[#2D6A4F]/10 focus:border-[#2D6A4F] focus:bg-white transition-all appearance-none cursor-pointer"
@@ -410,26 +422,28 @@ export default function LogActivity({ onAddLog, onDeleteLog, recentLogs }: LogAc
                             <option value="furniture">🛋️ Home Goods / Furniture piece</option>
                             <option value="general">📦 Miscellaneous / Plastic parcel</option>
                           </select>
-                          <ChevronDown className="absolute right-3.5 top-3.5 w-4 h-4 text-[#5E7E71] pointer-events-none" />
+                          <ChevronDown className="absolute right-3.5 top-3.5 w-4 h-4 text-[#5E7E71] pointer-events-none" aria-hidden="true" />
                         </div>
                       </div>
 
                       <div className="space-y-2">
-                        <label className="text-[10px] font-bold text-[#5E7E71] uppercase tracking-wider block">New Item count</label>
-                        <div className="flex items-center border border-[#E2E8F0] rounded-xl bg-[#F8FAFB] overflow-hidden divide-x divide-[#E2E8F0]">
+                        <label htmlFor="shopping-count-container" id="shopping-count-label" className="text-[10px] font-bold text-[#5E7E71] uppercase tracking-wider block">New Item count</label>
+                        <div id="shopping-count-container" role="group" aria-labelledby="shopping-count-label" className="flex items-center border border-[#E2E8F0] rounded-xl bg-[#F8FAFB] overflow-hidden divide-x divide-[#E2E8F0]">
                           <button
                             type="button"
                             onClick={() => setShoppingCount(Math.max(1, shoppingCount - 1))}
+                            aria-label="Decrease item count"
                             className="flex-1 py-3 text-center text-[#5E7E71] hover:bg-neutral-100 hover:text-[#1B4332] transition-all font-bold cursor-pointer"
                           >
                             -
                           </button>
-                          <span className="flex-[2] py-3 text-center text-sm font-black text-[#1B4332] bg-white">
+                          <span className="flex-[2] py-3 text-center text-sm font-black text-[#1B4332] bg-white" aria-live="polite">
                             {shoppingCount}
                           </span>
                           <button
                             type="button"
                             onClick={() => setShoppingCount(shoppingCount + 1)}
+                            aria-label="Increase item count"
                             className="flex-1 py-3 text-center text-[#5E7E71] hover:bg-neutral-100 hover:text-[#1B4332] transition-all font-bold cursor-pointer"
                           >
                             +

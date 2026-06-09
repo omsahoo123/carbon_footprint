@@ -226,7 +226,7 @@ export default function Insights({ logs, challenges, onToggleChallenge, weeklyTo
             <h3 className="font-sans font-bold text-[#1B4332] text-base mb-4">Emissions Breakdown</h3>
             <div className="space-y-4">
               {sortedCategories.map(cat => (
-                <div key={cat.id} className="space-y-11">
+                <div key={cat.id} className="space-y-2">
                   <div className="flex items-center justify-between text-xs">
                     <span className="font-bold text-[#1B4332] flex items-center gap-1.5">
                       <span className="text-xs">{cat.icon}</span> {cat.label}

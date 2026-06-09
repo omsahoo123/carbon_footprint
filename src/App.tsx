@@ -182,12 +182,17 @@ export default function App() {
     setTipIndex(prev => (prev + 1) % 8); // Cycles through 8 custom tips in constants
   };
 
+  const [showResetConfirm, setShowResetConfirm] = useState(false);
+
+  const confirmResetData = () => {
+    setLogs(getInitialLogs());
+    setChallenges(INITIAL_CHALLENGES);
+    setTipIndex(0);
+    setShowResetConfirm(false);
+  };
+
   const handleResetData = () => {
-    if (window.confirm("Restore default sample metrics and logs? This will reset your custom entries.")) {
-      setLogs(getInitialLogs());
-      setChallenges(INITIAL_CHALLENGES);
-      setTipIndex(0);
-    }
+    setShowResetConfirm(true);
   };
 
   return (
@@ -439,6 +444,43 @@ export default function App() {
           </div>
         </footer>
       </div>
+
+      {/* 4. Beautiful Reset Confirmation Modal */}
+      <AnimatePresence>
+        {showResetConfirm && (
+          <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4" role="dialog" aria-modal="true" aria-labelledby="reset-modal-title">
+            <motion.div
+              initial={{ scale: 0.95, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.95, opacity: 0 }}
+              className="bg-white rounded-2xl max-w-sm w-full p-6 shadow-xl border border-neutral-100 space-y-4"
+            >
+              <h3 id="reset-modal-title" className="text-base font-bold text-[#1B4332] flex items-center gap-2">
+                <Leaf className="w-5 h-5 text-rose-500 shrink-0" /> Reset Tracker Data?
+              </h3>
+              <p className="text-xs text-[#5E7E71] leading-relaxed font-semibold">
+                This will revert all customized entries back to the defaults. This operation is permanent and cannot be undone.
+              </p>
+              <div className="flex gap-2.5 pt-2">
+                <button
+                  type="button"
+                  onClick={() => setShowResetConfirm(false)}
+                  className="flex-1 py-2.5 rounded-xl border border-[#E2E8F0] text-xs font-bold text-[#5E7E71] hover:bg-[#F8FAFB] outline-none cursor-pointer"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="button"
+                  onClick={confirmResetData}
+                  className="flex-1 py-2.5 rounded-xl bg-rose-600 hover:bg-rose-700 text-white text-xs font-bold shadow-sm outline-none cursor-pointer"
+                >
+                  Yes, Reset
+                </button>
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
 
     </div>
   );
