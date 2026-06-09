@@ -1,0 +1,6 @@
+{
+  "name": "Carbon Footprint Tracker",
+  "description": "An interactive dashboard to monitor, log, and reduce your daily carbon footprint with personalized insights, tips, and leaderboards.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
